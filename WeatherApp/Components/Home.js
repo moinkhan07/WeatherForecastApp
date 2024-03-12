@@ -5,16 +5,19 @@ import {
   Image,
   Pressable,
   ScrollView,
+  TextInput,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import axios from "axios";
 
 const API_KEY = "e0747255b81f0cf228d13fc402815b24";
-const city = "Mumbai";
 
 const HourlyForecastsScreen = () => {
   const [hourlyData, setHourlyData] = useState(null);
@@ -22,14 +25,17 @@ const HourlyForecastsScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`
-        );
-        const { lat, lon } = response.data[0];
-        const weatherResponse = await axios.get(
-          `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`
-        );
-        setHourlyData(weatherResponse.data.list);
+        const savedCity = await AsyncStorage.getItem("city");
+        if (savedCity) {
+          const response = await axios.get(
+            `http://api.openweathermap.org/geo/1.0/direct?q=${savedCity}&limit=1&appid=${API_KEY}`
+          );
+          const { lat, lon } = response.data[0];
+          const weatherResponse = await axios.get(
+            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+          );
+          setHourlyData(weatherResponse.data.list);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -87,13 +93,16 @@ const DailyForecastsScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}`
-        );
-        const dailyData = response.data.list.filter(
-          (forecast, index) => index % 8 === 0
-        );
-        setDailyForecasts(dailyData);
+        const savedCity = await AsyncStorage.getItem("city");
+        if (savedCity) {
+          const response = await axios.get(
+            `http://api.openweathermap.org/data/2.5/forecast?q=${savedCity}&appid=${API_KEY}`
+          );
+          const dailyData = response.data.list.filter(
+            (forecast, index) => index % 8 === 0
+          );
+          setDailyForecasts(dailyData);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -169,6 +178,26 @@ const TabBtn = () => {
 
 const Home = () => {
   const [weatherData, setWeatherData] = useState(null);
+  const [city, setCity] = useState("Mumbai");
+  const [newCity, setNewCity] = useState("");
+
+  useEffect(() => {
+    const setInitialCity = async () => {
+      try {
+        const savedCity = await AsyncStorage.getItem("city");
+        if (!savedCity) {
+          await AsyncStorage.setItem("city", "Mumbai");
+          setCity("Mumbai");
+        } else {
+          setCity(savedCity);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    setInitialCity();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -187,13 +216,36 @@ const Home = () => {
     };
 
     fetchData();
-  }, []);
+  }, [city]);
+
+  const updateCity = () => {
+    if (newCity !== "") {
+      setCity(newCity);
+      AsyncStorage.setItem("city", newCity);
+    }
+  };
+
   return (
     <LinearGradient
       colors={["rgb(11,5,81)", "rgb(84,37,154)", "rgb(164,100,206)"]}
       locations={[0.29, 0.53, 0.8]}
       style={styles.homeMain}
     >
+      <View style={styles.setCityView}>
+        <TextInput
+          placeholderTextColor={"#C0C0C0"}
+          style={styles.setCity}
+          placeholder="Search for a city"
+          onChangeText={setNewCity}
+          value={newCity}
+        />
+        <Pressable
+          onPress={updateCity}
+          style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
+        >
+          <Ionicons name="add-circle" size={50} color="#fff" />
+        </Pressable>
+      </View>
       <View style={styles.homeView}>
         <View style={styles.homeImg}>
           <Image
@@ -286,6 +338,23 @@ const styles = StyleSheet.create({
     height: "80%",
     justifyContent: "center",
     alignItems: "center",
+  },
+  setCityView: {
+    width: "95%",
+    height: 50,
+    justifyContent: "space-around",
+    alignItems: "center",
+    flexDirection: "row",
+    alignSelf: "center",
+  },
+  setCity: {
+    width: "80%",
+    height: 45,
+    paddingLeft: 10,
+    borderRadius: 10,
+    borderWidth: 0.3,
+    color: "white",
+    borderColor: "#848484",
   },
 });
 
