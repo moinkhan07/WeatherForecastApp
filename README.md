@@ -12,5 +12,16 @@ To get a local copy up and running follow these simple steps.
   ```sh
   npm install npm@latest -g
 
-- Installation
+### Installation
+- Clone the repo
+  ``` sh
+  git clone https://github.com/moinkhan07/WeatherForecastApp.git
 
+- Install NPM packages
+  ``` sh
+  cd WeatherForecastApp
+  npm install
+
+- Run the application
+  ``` sh
+  npm start
