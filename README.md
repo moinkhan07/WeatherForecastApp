@@ -2,8 +2,41 @@
 
 #### This is a Weather Forecast application built with Expo and React Native. It utilizes the OpenWeatherAPI to fetch weather data and React Navigation for navigating through the components. Axios is used for making HTTP requests to the OpenWeatherAPI.
 
+## Getting Started
+
+To get a local copy up and running follow these simple steps.
+
+### Prerequisites
+
+- npm
+  ```sh
+  npm install npm@latest -g
+
+### Installation
+- Clone the repo
+  ``` sh
+  git clone https://github.com/moinkhan07/WeatherForecastApp.git
+
+- Install NPM packages
+  ``` sh
+  cd WeatherForecastApp
+  npm install
+
+- Run the application
+  ``` sh
+  npm start
+
+
 ## Video 
-[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://drive.google.com/file/d/131eL5ec9tD3jy7vx0jBw9aA_CXR5UICD/view?usp=drive_link)
+[Watch the video](https://drive.google.com/file/d/131eL5ec9tD3jy7vx0jBw9aA_CXR5UICD/view?usp=drive_link)
+
+## Screenshots
+<p float="left">
+  <img src="/WeatherApp/assets/WelcomePage.jpg" width="300" />
+  <img src="/WeatherApp/assets/HomePage.jpg" width="300" /> 
+  <img src="/WeatherApp/assets/AllCities.jpg" width="300" />
+</p>
+
 
 
 ## Weather App Features:
@@ -31,29 +64,5 @@ Swipe through the tabs to switch to the "Daily Forecasts" screen and see the wea
 
 - Temperature Display:
 After searching for a city, the app displays the current temperature along with other weather details.
-
-## Getting Started
-
-To get a local copy up and running follow these simple steps.
-
-### Prerequisites
-
-- npm
-  ```sh
-  npm install npm@latest -g
-
-### Installation
-- Clone the repo
-  ``` sh
-  git clone https://github.com/moinkhan07/WeatherForecastApp.git
-
-- Install NPM packages
-  ``` sh
-  cd WeatherForecastApp
-  npm install
-
-- Run the application
-  ``` sh
-  npm start
 
 ## Thank You For Reading!
