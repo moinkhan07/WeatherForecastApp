@@ -32,9 +32,9 @@ To get a local copy up and running follow these simple steps.
 
 ## Screenshots
 <p float="left">
-  <img src="/WeatherApp/assets/WelcomePage.jpg" width="300" />
-  <img src="/WeatherApp/assets/HomePage.jpg" width="300" /> 
-  <img src="/WeatherApp/assets/AllCities.jpg" width="300" />
+  <img src="/WeatherApp/assets/WelcomePage.jpg" width="250" />
+  <img src="/WeatherApp/assets/HomePage.jpg" width="250" /> 
+  <img src="/WeatherApp/assets/AllCities.jpg" width="250" />
 </p>
 
 
